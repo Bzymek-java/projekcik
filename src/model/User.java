@@ -1,10 +1,6 @@
-import javax.persistence.*;
+package model;
 
-@Entity
-@Table(name = "users")
 public class User {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
     private int id;
     private String login;
     private String password;
@@ -16,10 +12,8 @@ public class User {
     public User() {}
 
     public void updatePreferences(Preference p) {
-        // implementacja aktualizacji preferencji użytkownika
     }
 
-    // Gettery i settery
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getLogin() { return login; }
