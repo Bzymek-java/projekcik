@@ -3,6 +3,8 @@ package service;
 import model.User;
 import repository.UserRepository;
 
+import java.util.Objects;
+
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -40,6 +42,6 @@ public class AuthService {
     }
 
     private boolean checkPassword(String input, String stored) {
-        return input.equals(stored);
+        return Objects.equals(input, stored);
     }
 }

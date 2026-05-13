@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class Preference {
     private int id;
     private String rank;
@@ -8,10 +10,15 @@ public class Preference {
 
     public boolean matches(Preference other) {
         if (other == null) return false;
-        if (this.preferedGame != null && !this.preferedGame.equalsIgnoreCase(other.preferedGame)) {
-            return false;
+        
+        if (!Objects.equals(this.preferedGame, other.preferedGame)) {
+            if (this.preferedGame != null && !this.preferedGame.equalsIgnoreCase(other.preferedGame)) {
+                return false;
+            }
         }
+        
         if (this.preferedVoiceChat != other.preferedVoiceChat) return false;
+        
         if (this.rank != null && other.rank != null) {
             return this.rank.equalsIgnoreCase(other.rank);
         }

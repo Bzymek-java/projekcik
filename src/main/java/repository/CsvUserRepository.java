@@ -8,13 +8,18 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CsvUserRepository implements repository.UserRepository {
-	private final String filePath = "users.csv";
+public class CsvUserRepository implements UserRepository {
+	private final String filePath;
 
 	public CsvUserRepository() {
+		this("users.csv");
+	}
+
+	public CsvUserRepository(String filePath) {
+		this.filePath = filePath;
 		// ensure file exists
 		try {
-			File f = new File(filePath);
+			File f = new File(this.filePath);
 			if (!f.exists()) f.createNewFile();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -38,7 +43,7 @@ public class CsvUserRepository implements repository.UserRepository {
 			String line;
 			while ((line = br.readLine()) != null) {
 				if (line.trim().isEmpty()) continue;
-				String[] parts = line.split(",");
+				String[] parts = line.split(",", -1);
 				User u = new User();
 				try { u.setId(Integer.parseInt(parts[0])); } catch (Exception ignored) {}
 				if (parts.length > 1) u.setLogin(parts[1]);

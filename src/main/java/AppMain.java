@@ -11,12 +11,12 @@ public class AppMain {
         AuthService auth = new AuthService(repo);
 
         User u = new User();
-        u.setLogin("alice");
-        u.setPassword("pass");
-        u.setAge(25);
-        u.setLanguage("pl");
-        u.setSex("F");
-        u.setServer("EUW");
+        u.setLogin("bob");
+        u.setPassword("pass123");
+        u.setAge(30);
+        u.setLanguage("en");
+        u.setSex("M");
+        u.setServer("EUNE");
 
         try {
             auth.register(u);

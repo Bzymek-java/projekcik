@@ -1,3 +1,11 @@
+### Maven ###
+target/
+*.class
+
+### AI & Tools ###
+.junie/
+.idea/copilotDiffState.xml
+
 ### IntelliJ IDEA ###
 out/
 !**/src/main/**/out/
