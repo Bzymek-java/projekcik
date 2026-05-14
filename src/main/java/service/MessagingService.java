@@ -2,14 +2,14 @@ package service;
 
 import model.Message;
 import model.User;
-import repository.MessageRepository;
+import repository.CsvMessageRepository;
 
 import java.time.LocalDateTime;
 
 public class MessagingService {
-    private final MessageRepository messageRepository;
+    private final CsvMessageRepository messageRepository;
 
-    public MessagingService(MessageRepository messageRepository) {this.messageRepository = messageRepository;}
+    public MessagingService(CsvMessageRepository messageRepository) {this.messageRepository = messageRepository;}
 
     public void sendMessage(User recipient, User sender, String text){
         Message message = new Message();

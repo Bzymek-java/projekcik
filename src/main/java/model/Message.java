@@ -33,8 +33,8 @@ public class Message {
     public String toString() {
         return "Message{" +
                 "id=" + id +
-                ", text='" + text + ''' +
-        ", timestamp=" + timestamp +
+                ", text='" + text + '\'' +
+                ", timestamp=" + timestamp +
                 ", sender=" + sender +
                 ", recipient=" + recipient +
                 '}';

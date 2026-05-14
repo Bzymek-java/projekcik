@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CsvMessageRepository implements MessageRepository {
+public class CsvMessageRepository {
 
     private final String filePath = "messages.csv";
 
@@ -58,9 +58,11 @@ public class CsvMessageRepository implements MessageRepository {
         return messagesList;
     }
 
-    @Override
     public synchronized void save(Message message) {
         if (message == null) throw new IllegalArgumentException("message is null");
+        if (message.getSender() == null || message.getRecipient() == null) {
+            throw new IllegalArgumentException("sender and recipient must not be null");
+        }
         
         List<Message> all = findAll();
         int maxId = 0;
@@ -83,7 +85,6 @@ public class CsvMessageRepository implements MessageRepository {
         }
     }
 
-    @Override
     public List<Message> findByUser(User user) {
         List<Message> userMessages = new ArrayList<>();
         if (user == null) return userMessages;
@@ -105,6 +106,6 @@ public class CsvMessageRepository implements MessageRepository {
 
     private String unescape(String s) {
         if (s == null) return "";
-        return s;
+        return s.replace(";", ",");
     }
 }
