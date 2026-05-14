@@ -17,7 +17,6 @@ public class Message {
         this.recipient = recipient;
         this.text = text;
     }
-
     public int getId() {return id;}
     public void setId(int id) {this.id = id;}
     public String getText() {return text;}
