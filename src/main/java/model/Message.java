@@ -2,14 +2,14 @@ package model;
 
 import java.time.LocalDateTime;
 
-public class Message {
+public class Message extends User{
     private int id;
     private String text;
     private LocalDateTime timestamp;
     private User sender;
     private User recipient;
 
-    public Message(){ }
+    public Message(){ /*pusty konstruktor*/}
     public Message(int id, LocalDateTime timestamp, User sender, User recipient,String text) {
         this.id = id;
         this.timestamp = timestamp;
@@ -17,6 +17,7 @@ public class Message {
         this.recipient = recipient;
         this.text = text;
     }
+
     public int getId() {return id;}
     public void setId(int id) {this.id = id;}
     public String getText() {return text;}
@@ -28,6 +29,7 @@ public class Message {
     public User getRecipient() {return recipient;}
     public void setRecipient(User recipient) {this.recipient = recipient;}
     //toString do testowania
+
     @Override
     public String toString() {
         return "Message{" +
