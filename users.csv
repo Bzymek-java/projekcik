@@ -1,1 +1,10 @@
-1,alice,pass,25,F,pl,EUW
+1,testGold1,haslo123,21,M,Polski,EUNE,GOLD_2,true,LOL,,SOLO_DUO,rank
+2,testPlat1,haslo123,22,K,Polski,EUNE,PLATINUM_3,true,LOL,,SOLO_DUO,rank
+3,testSilver1,haslo123,20,M,Polski,EUNE,SILVER_1,false,LOL,,FLEX,game
+4,testEmerald1,haslo123,24,K,Angielski,EUW,EMERALD_2,true,LOL,,FLEX,language
+5,testDiamond1,haslo123,25,M,Polski,EUNE,DIAMOND_1,true,LOL,,SOLO_DUO,rank
+6,testDiamond2,haslo123,23,M,Polski,EUNE,DIAMOND_2,true,LOL,,SOLO_DUO,rank
+7,testMaster1,haslo123,26,M,Polski,EUNE,MASTER,true,LOL,,SOLO_DUO,rank
+8,testMasterFlex,haslo123,27,K,Polski,EUNE,MASTER,true,LOL,,FLEX,rank
+9,testCS1,haslo123,22,M,Polski,EUNE,GLOBAL,true,CS,Mirage,,csmap
+10,testCS2,haslo123,21,K,Polski,EUNE,AK,true,CS,Mirage,,game

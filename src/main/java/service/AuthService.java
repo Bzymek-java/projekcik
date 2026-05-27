@@ -1,22 +1,24 @@
 package service;
 
+import model.Preference;
 import model.User;
 import repository.UserRepository;
 
-import java.util.Objects;
 import java.util.Scanner;
 
 public class AuthService {
 
     private final UserRepository userRepository;
+
     private final Scanner scanner;
 
-    public AuthService(UserRepository repo) {
-        this.userRepository = repo;
+    public AuthService(UserRepository userRepository) {
+
+        this.userRepository = userRepository;
+
         this.scanner = new Scanner(System.in);
     }
 
-    // Rejestracja użytkownika przez wpisanie danych z konsoli
     public User register() {
 
         User user = new User();
@@ -24,72 +26,300 @@ public class AuthService {
         System.out.println("=== REJESTRACJA ===");
 
         System.out.print("Login: ");
-        String login = scanner.nextLine();
-
-        // sprawdzanie czy login istnieje
-        if (userRepository.findByLogin(login) != null) {
-            throw new IllegalArgumentException("Login already exists");
-        }
+        user.setLogin(scanner.nextLine());
 
         System.out.print("Hasło: ");
-        String password = scanner.nextLine();
+        user.setPassword(scanner.nextLine());
 
         System.out.print("Wiek: ");
-        int age = Integer.parseInt(scanner.nextLine());
+        user.setAge(Integer.parseInt(scanner.nextLine()));
 
         System.out.print("Płeć: ");
-        String sex = scanner.nextLine();
+        user.setSex(scanner.nextLine());
 
         System.out.print("Język: ");
-        String language = scanner.nextLine();
+        user.setLanguage(scanner.nextLine());
 
         System.out.print("Serwer: ");
-        String server = scanner.nextLine();
+        user.setServer(scanner.nextLine());
 
-        // ustawianie danych
-        user.setLogin(login);
-        user.setPassword(password);
-        user.setAge(age);
-        user.setSex(sex);
-        user.setLanguage(language);
-        user.setServer(server);
+        Preference preference = new Preference();
 
-        // zapis do CSV
+        System.out.println("""
+                
+                Wybierz grę:
+                1. LOL
+                2. CS
+                """);
+
+        String gameChoice = scanner.nextLine();
+
+        if (gameChoice.equals("1")) {
+            preference.setPreferredGame("LOL");
+        } else {
+            preference.setPreferredGame("CS");
+        }
+
+        System.out.print("Preferowany VC (true/false): ");
+
+        preference.setPreferredVoiceChat(
+                Boolean.parseBoolean(scanner.nextLine())
+        );
+
+        // LOL
+        if (preference.getPreferredGame()
+                .equalsIgnoreCase("LOL")) {
+
+            preference.setRank(
+                    chooseLolRank()
+            );
+
+            preference.setLolMode(
+                    chooseLolMode()
+            );
+        }
+
+        // CS
+        if (preference.getPreferredGame()
+                .equalsIgnoreCase("CS")) {
+
+            System.out.print("""
+                    
+                    Rank CS:
+                    SILVER
+                    GOLD
+                    AK
+                    SHERIFF
+                    GLOBAL
+                    
+                    Podaj rangę:
+                    """);
+
+            preference.setRank(scanner.nextLine());
+
+            preference.setCsMap(
+                    chooseCsMap()
+            );
+        }
+
+        System.out.print("""
+                
+                Obowiązkowy match:
+                rank
+                game
+                voiceChat
+                csMap
+                lolMode
+                language
+                server
+                
+                Wybór:
+                """);
+
+        preference.setRequiredMatchField(
+                scanner.nextLine()
+        );
+
+        user.setPreference(preference);
+
         userRepository.save(user);
-
-        System.out.println("Użytkownik został zarejestrowany.");
 
         return user;
     }
 
-    // logowanie
     public User login() {
 
         System.out.println("=== LOGOWANIE ===");
 
         System.out.print("Login: ");
+
         String login = scanner.nextLine();
 
         System.out.print("Hasło: ");
+
         String password = scanner.nextLine();
 
         User user = userRepository.findByLogin(login);
 
         if (user == null) {
-            System.out.println("Użytkownik nie istnieje.");
             return null;
         }
 
-        if (checkPassword(password, user.getPassword())) {
-            System.out.println("Zalogowano pomyślnie.");
-            return user;
+        if (!user.getPassword().equals(password)) {
+            return null;
         }
 
-        System.out.println("Niepoprawne hasło.");
-        return null;
+        return user;
     }
 
-    private boolean checkPassword(String input, String stored) {
-        return Objects.equals(input, stored);
+    /*
+     * LOL RANK
+     */
+    private String chooseLolRank() {
+
+        System.out.println("""
+                
+                Wybierz tier:
+                1. IRON
+                2. BRONZE
+                3. SILVER
+                4. GOLD
+                5. PLATINUM
+                6. EMERALD
+                7. DIAMOND
+                8. MASTER
+                """);
+
+        int tierChoice =
+                Integer.parseInt(scanner.nextLine());
+
+        String tier;
+
+        switch (tierChoice) {
+
+            case 1:
+                tier = "IRON";
+                break;
+
+            case 2:
+                tier = "BRONZE";
+                break;
+
+            case 3:
+                tier = "SILVER";
+                break;
+
+            case 4:
+                tier = "GOLD";
+                break;
+
+            case 5:
+                tier = "PLATINUM";
+                break;
+
+            case 6:
+                tier = "EMERALD";
+                break;
+
+            case 7:
+                tier = "DIAMOND";
+                break;
+
+            case 8:
+                return "MASTER";
+
+            default:
+                return "GOLD_4";
+        }
+
+        System.out.println("""
+                
+                Wybierz dywizję:
+                1. I
+                2. II
+                3. III
+                4. IV
+                """);
+
+        int divisionChoice =
+                Integer.parseInt(scanner.nextLine());
+
+        int division;
+
+        switch (divisionChoice) {
+
+            case 1:
+                division = 1;
+                break;
+
+            case 2:
+                division = 2;
+                break;
+
+            case 3:
+                division = 3;
+                break;
+
+            default:
+                division = 4;
+        }
+
+        return tier + "_" + division;
+    }
+
+    /*
+     * LOL MODE
+     */
+    private String chooseLolMode() {
+
+        System.out.println("""
+                
+                Wybierz tryb:
+                1. SOLO_DUO
+                2. FLEX
+                3. ARAM
+                4. NORMAL
+                """);
+
+        int choice =
+                Integer.parseInt(scanner.nextLine());
+
+        switch (choice) {
+
+            case 1:
+                return "SOLO_DUO";
+
+            case 2:
+                return "FLEX";
+
+            case 3:
+                return "ARAM";
+
+            case 4:
+                return "NORMAL";
+
+            default:
+                return "NORMAL";
+        }
+    }
+
+    /*
+     * CS MAP
+     */
+    private String chooseCsMap() {
+
+        System.out.println("""
+                
+                Wybierz mapę:
+                1. Mirage
+                2. Inferno
+                3. Dust2
+                4. Nuke
+                5. Ancient
+                """);
+
+        int choice =
+                Integer.parseInt(scanner.nextLine());
+
+        switch (choice) {
+
+            case 1:
+                return "Mirage";
+
+            case 2:
+                return "Inferno";
+
+            case 3:
+                return "Dust2";
+
+            case 4:
+                return "Nuke";
+
+            case 5:
+                return "Ancient";
+
+            default:
+                return "Mirage";
+        }
     }
 }
