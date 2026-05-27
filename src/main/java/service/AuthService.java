@@ -40,9 +40,6 @@ public class AuthService {
         System.out.print("Język: ");
         user.setLanguage(scanner.nextLine());
 
-        System.out.print("Serwer: ");
-        user.setServer(scanner.nextLine());
-
         Preference preference = new Preference();
 
         System.out.println("""
@@ -60,13 +57,18 @@ public class AuthService {
             preference.setPreferredGame("CS");
         }
 
+        user.setServer(
+                chooseServer(
+                        preference.getPreferredGame()
+                )
+        );
+
         System.out.print("Preferowany VC (true/false): ");
 
         preference.setPreferredVoiceChat(
                 Boolean.parseBoolean(scanner.nextLine())
         );
 
-        // LOL
         if (preference.getPreferredGame()
                 .equalsIgnoreCase("LOL")) {
 
@@ -79,7 +81,6 @@ public class AuthService {
             );
         }
 
-        // CS
         if (preference.getPreferredGame()
                 .equalsIgnoreCase("CS")) {
 
@@ -152,9 +153,80 @@ public class AuthService {
         return user;
     }
 
-    /*
-     * LOL RANK
-     */
+    private String chooseServer(String game) {
+
+        if (game.equalsIgnoreCase("LOL")) {
+
+            System.out.println("""
+                    
+                    Wybierz serwer LoL:
+                    1. EUNE
+                    2. EUW
+                    3. NA
+                    4. KR
+                    """);
+
+            int choice =
+                    Integer.parseInt(scanner.nextLine());
+
+            switch (choice) {
+
+                case 1:
+                    return "EUNE";
+
+                case 2:
+                    return "EUW";
+
+                case 3:
+                    return "NA";
+
+                case 4:
+                    return "KR";
+
+                default:
+                    return "EUNE";
+            }
+        }
+
+        System.out.println("""
+                
+                Wybierz serwer CS2:
+                1. Frankfurt
+                2. Warsaw
+                3. Vienna
+                4. Stockholm
+                5. Madrid
+                6. Amsterdam
+                """);
+
+        int choice =
+                Integer.parseInt(scanner.nextLine());
+
+        switch (choice) {
+
+            case 1:
+                return "Frankfurt";
+
+            case 2:
+                return "Warsaw";
+
+            case 3:
+                return "Vienna";
+
+            case 4:
+                return "Stockholm";
+
+            case 5:
+                return "Madrid";
+
+            case 6:
+                return "Amsterdam";
+
+            default:
+                return "Frankfurt";
+        }
+    }
+
     private String chooseLolRank() {
 
         System.out.println("""
@@ -247,9 +319,6 @@ public class AuthService {
         return tier + "_" + division;
     }
 
-    /*
-     * LOL MODE
-     */
     private String chooseLolMode() {
 
         System.out.println("""
@@ -283,9 +352,6 @@ public class AuthService {
         }
     }
 
-    /*
-     * CS MAP
-     */
     private String chooseCsMap() {
 
         System.out.println("""

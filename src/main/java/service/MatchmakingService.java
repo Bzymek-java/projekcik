@@ -43,6 +43,15 @@ public class MatchmakingService {
                 continue;
             }
 
+            if (!currentPreference.getPreferredGame()
+                    .equalsIgnoreCase(
+                            otherUser.getPreference()
+                                    .getPreferredGame()
+                    )) {
+
+                continue;
+            }
+
             boolean requiredMatches =
                     currentPreference.matchesRequiredField(
                             currentUser,
@@ -59,7 +68,6 @@ public class MatchmakingService {
                             otherUser
                     );
 
-            // minimum sensownego matcha
             if (score >= 6) {
                 matches.add(otherUser);
             }

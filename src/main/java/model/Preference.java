@@ -31,10 +31,6 @@ public class Preference {
             return 0;
         }
 
-        if (equals(preferredGame, other.preferredGame)) {
-            score += 3;
-        }
-
         if (isRankCompatible(
                 rank,
                 other.rank,
