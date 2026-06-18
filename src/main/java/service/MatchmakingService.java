@@ -9,25 +9,70 @@ import java.util.List;
 import java.util.Objects;
 
 public class MatchmakingService {
+
     private final UserRepository userRepository;
 
     public MatchmakingService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public List<User> findMatchingUser(User user, Preference pref) {
-        List<User> all = userRepository.findAll();
+    public List<User> findMatchingUsers(User currentUser) {
+
         List<User> matches = new ArrayList<>();
-        if (user == null) return matches;
-        for (User u : all) {
-            if (Objects.equals(u.getLogin(), user.getLogin())) continue;
-            boolean sameLanguage = user.getLanguage() != null && user.getLanguage().equalsIgnoreCase(u.getLanguage());
-            boolean sameServer = user.getServer() != null && user.getServer().equalsIgnoreCase(u.getServer());
-            if (sameLanguage && sameServer) {
-                matches.add(u);
+
+        List<User> allUsers = userRepository.findAll();
+
+        if (currentUser == null ||
+                currentUser.getPreference() == null) {
+            return matches;
+        }
+
+        Preference currentPreference =
+                currentUser.getPreference();
+
+        for (User otherUser : allUsers) {
+
+            if (Objects.equals(
+                    currentUser.getLogin(),
+                    otherUser.getLogin()
+            )) {
+                continue;
+            }
+
+            if (otherUser.getPreference() == null) {
+                continue;
+            }
+
+            if (!currentPreference.getPreferredGame()
+                    .equalsIgnoreCase(
+                            otherUser.getPreference()
+                                    .getPreferredGame()
+                    )) {
+
+                continue;
+            }
+
+            boolean requiredMatches =
+                    currentPreference.matchesRequiredField(
+                            currentUser,
+                            otherUser
+                    );
+
+            if (!requiredMatches) {
+                continue;
+            }
+
+            int score =
+                    currentPreference.calculateMatchScore(
+                            currentUser,
+                            otherUser
+                    );
+
+            if (score >= 6) {
+                matches.add(otherUser);
             }
         }
+
         return matches;
     }
 }
-
